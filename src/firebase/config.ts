@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
-import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from 'firebase/firestore';
+import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, query, where } from 'firebase/firestore';
 
 
 const firebaseConfig = {
@@ -12,11 +12,13 @@ const firebaseConfig = {
   appId: "1:425264268104:web:47fb89d0a9721bb2fee97d"
 };
 
-// Инициализиране на Firebase
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
 
-// Експортиране на auth за използване в други компоненти
-export const auth = getAuth(app);
-export { db, collection, addDoc, getDocs, deleteDoc, doc };
+// Инициализация на Firebase
+const app = initializeApp(firebaseConfig);
+
+// Получаваме Firestore и Auth инстанции
+const db = getFirestore(app);
+const auth = getAuth(app);
+
+export { db, auth, collection, addDoc, getDocs, deleteDoc, doc, query, where };
 
