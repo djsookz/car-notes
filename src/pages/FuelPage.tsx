@@ -18,7 +18,7 @@
     const [pricePerLiter, setPricePerLiter] = useState<string>('');
     const [liters, setLiters] = useState<string>('');
     const [totalPrice, setTotalPrice] = useState<string>('');
-    const [fuelType, setFuelType] = useState<string>('benzine');
+    const [fuelType, setFuelType] = useState<string>('Бензин');
     const [mileage, setMileage] = useState<string>('');
     const [date, setDate] = useState<string>('');
     const [comment, setComment] = useState<string>(''); 
@@ -92,7 +92,7 @@
         setPricePerLiter('');
         setLiters('');
         setTotalPrice('');
-        setFuelType('benzine');
+        setFuelType('Бензин');
         setMileage('');
         setDate('');
         setComment('');
@@ -140,9 +140,9 @@
                 value={fuelType} 
                 onChange={(e) => setFuelType(e.target.value)}
             >
-                <option value="benzine">Бензин</option>
-                <option value="diesel">Дизел</option>
-                <option value="gas">Газ</option>
+                <option value="Бензин">Бензин</option>
+                <option value="Дизел">Дизел</option>
+                <option value="Газ">Газ</option>
             </select>
 
             <label>Цена на литър:</label>
