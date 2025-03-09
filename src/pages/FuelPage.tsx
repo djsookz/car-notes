@@ -4,6 +4,7 @@ import './FuelPage.css';
 import { db, collection, addDoc, getDocs, deleteDoc, doc } from '../firebase/config';
 
 interface FuelEntry {
+    id?: string;
   totalPrice: string;
   fuelType: string;
   pricePerLiter: string;
