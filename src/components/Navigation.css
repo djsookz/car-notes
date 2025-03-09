@@ -1,0 +1,35 @@
+.nav-container {
+    display: flex;
+    width: 100%;
+    background-color: azure;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
+.nav-container .nav-logo {
+    color: black;
+    margin-left: 15px;
+}
+
+.profile-container {
+    display: flex;
+    align-items: center;
+}
+
+.profile-container .username {
+    color: black;
+    text-align: center;
+    margin-left: 10px;
+}
+
+.profile-container .profile-image{
+    border-radius: 50%;
+    width: 20%;
+}
+
+.profile-container .sign-out-button {
+    margin-left: 40px;
+}
+.nav-container .nav-buttons .nav-link {
+    padding: 10px;
+}
