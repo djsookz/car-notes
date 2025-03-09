@@ -104,7 +104,7 @@
             return;
           }
         try {
-        await deleteDoc(doc(db, "fuelRecords", id));
+        await deleteDoc(doc(collection(db, "fuelRecords", id)));
         setFuelEntries(fuelEntries.filter(entry => entry.id !== id));
         } catch (e) {
         console.error("Error deleting document: ", e);
