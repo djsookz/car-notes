@@ -24,8 +24,8 @@ const FuelPage = () => {
     const [date, setDate] = useState<string>('');
     const [comment, setComment] = useState<string>(''); 
     const [errorMessage, setErrorMessage] = useState<string>(''); 
-
     const [fuelEntries, setFuelEntries] = useState<FuelEntry[]>([]);
+    const [isModalVisible, setIsModalVisible] = useState<boolean>(false); // Състояние за видимост на модалния прозорец
 
     const calculateTotalPrice = (price: number, liters: number) => {
         return (price * liters).toFixed(2);
@@ -119,6 +119,7 @@ const FuelPage = () => {
         setMileage('');
         setDate('');
         setComment('');
+        setIsModalVisible(false); // Скриваме модала след като добавим данни
     };
 
     const handleDeleteEntry = async (id?: string) => {
@@ -142,79 +143,89 @@ const FuelPage = () => {
         setFuelEntries([]);
     };
 
+    const toggleModalVisibility = () => {
+        setIsModalVisible(!isModalVisible); // Променяме видимостта на модала
+    };
+
     return (
         <div className="fuel-container">
             <Navigation />
             <h1>Добави гориво</h1>
-            <div className="form-container">
-                <form onSubmit={handleFormSubmit}>
-                    {errorMessage && <div className="error-message">{errorMessage}</div>}
+            
+            <button onClick={toggleModalVisibility} className="add-fuel-button">
+                {isModalVisible ? "Затвори формата" : "Добави ново гориво"}
+            </button>
 
-                    <label>Обща платена цена:</label>
-                    <input 
-                        type="number" 
-                        value={totalPrice} 
-                        onChange={(e) => setTotalPrice(e.target.value)}
-                        placeholder="Обща цена" 
-                    />
+            {isModalVisible && (
+                <div className={`modal-overlay ${isModalVisible ? 'show' : ''}`}> {/* Задният замъглен фон */}
+                    <div className={`modal-container ${isModalVisible ? 'show' : ''}`}> {/* Модалният прозорец с формата */}
+                        <button onClick={toggleModalVisibility} className="close-button">X</button> {/* Бутон за затваряне */}
+                        <form onSubmit={handleFormSubmit}>
+                            {errorMessage && <div className="error-message">{errorMessage}</div>}
 
-                    <label>Тип гориво:</label>
-                    <select 
-                        value={fuelType} 
-                        onChange={(e) => setFuelType(e.target.value)}
-                    >
-                        <option value="Бензин">Бензин</option>
-                        <option value="Дизел">Дизел</option>
-                        <option value="Газ">Газ</option>
-                    </select>
+                            <label>Обща платена цена:</label>
+                            <input 
+                                type="number" 
+                                value={totalPrice} 
+                                onChange={(e) => setTotalPrice(e.target.value)}
+                                placeholder="Обща цена" 
+                            />
 
-                    <label>Цена на литър:</label>
-                    <input 
-                        type="number" 
-                        value={pricePerLiter}
-                        onChange={(e) => setPricePerLiter(e.target.value)}
-                        placeholder="Цена на литър"
-                    />
+                            <label>Тип гориво:</label>
+                            <select 
+                                value={fuelType} 
+                                onChange={(e) => setFuelType(e.target.value)}
+                            >
+                                <option value="Бензин">Бензин</option>
+                                <option value="Дизел">Дизел</option>
+                                <option value="Газ">Газ</option>
+                            </select>
 
-                    <label>Литри гориво:</label>
-                    <input 
-                        type="number" 
-                        value={liters}
-                        onChange={(e) => setLiters(e.target.value)}
-                        placeholder="Литри гориво"
-                    />
+                            <label>Цена на литър:</label>
+                            <input 
+                                type="number" 
+                                value={pricePerLiter}
+                                onChange={(e) => setPricePerLiter(e.target.value)}
+                                placeholder="Цена на литър"
+                            />
 
-                    <label>Километраж:</label>
-                    <input 
-                        type="number" 
-                        value={mileage} 
-                        onChange={(e) => setMileage(e.target.value)}
-                        placeholder="Километраж" 
-                    />
+                            <label>Литри гориво:</label>
+                            <input 
+                                type="number" 
+                                value={liters}
+                                onChange={(e) => setLiters(e.target.value)}
+                                placeholder="Литри гориво"
+                            />
 
-                    <label>Дата:</label>
-                    <input 
-                        type="date" 
-                        value={date} 
-                        onChange={(e) => setDate(e.target.value)}
-                    />
+                            <label>Километраж:</label>
+                            <input 
+                                type="number" 
+                                value={mileage} 
+                                onChange={(e) => setMileage(e.target.value)}
+                                placeholder="Километраж" 
+                            />
 
-                    <label>Коментар:</label>
-                    <textarea 
-                        value={comment} 
-                        onChange={(e) => setComment(e.target.value)}
-                        placeholder="Добави коментар (не е задължително)"
-                    />
+                            <label>Дата:</label>
+                            <input 
+                                type="date" 
+                                value={date} 
+                                onChange={(e) => setDate(e.target.value)}
+                            />
 
-                    <button type="submit">Запази</button>
-                </form>
-            </div>
+                            <label>Коментар:</label>
+                            <textarea 
+                                value={comment} 
+                                onChange={(e) => setComment(e.target.value)}
+                                placeholder="Добави коментар (не е задължително)"
+                            />
 
-            {fuelEntries.length > 0 && (
-                <button onClick={handleDeleteAllEntries} className="delete-all-button">
-                    Изтрий всички записи
-                </button>
+                            <button type="submit">Запази</button>
+                        </form>
+                    </div>
+                </div>
             )}
+
+            
 
             <div className="fuel-table-container">
                 <h2>Добавени записи:</h2>
@@ -253,6 +264,13 @@ const FuelPage = () => {
                         ))}
                     </tbody>
                 </table>
+                <div className='delete-button'>
+            {fuelEntries.length > 0 && (
+                <button onClick={handleDeleteAllEntries} className="delete-all-button">
+                    Изтрий всички записи
+                </button>
+            )}
+            </div>
             </div>
         </div>
     );
