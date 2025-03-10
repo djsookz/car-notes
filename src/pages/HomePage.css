@@ -1,3 +1,9 @@
 .Home-Container {
     width: 100%;
+    height: calc(97vh - 95px);
+    margin-top: 95px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
