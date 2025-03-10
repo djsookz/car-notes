@@ -23,15 +23,15 @@
     flex-direction: column;
 }
 
-.fuel-table-container table {
+.documents-table-container table {
     text-align: center;
 }
 
-.fuel-table-container h2 {
+.documents-table-container h2 {
     text-align: center;
 }
 
-.fuel-table-container table th {
+.documents-table-container table th {
     padding: 15px 28px;
 }
 
@@ -72,12 +72,12 @@
     font-size: 15px;
     padding: 5px 12px;
 }
-.fuel-table-container table {
+.documents-table-container table {
     
     border-spacing: 0 15px;
 }
 
-.fuel-table-container tr,td{
+.documents-table-container tr,td{
     margin-bottom: 15px; 
     border-bottom: 1px solid white;
 }
@@ -106,4 +106,4 @@
     justify-content: right;
     margin-top: 35px;
 }
-/* Когато модалът е
+
