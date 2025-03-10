@@ -6,6 +6,7 @@
    background-color: rgb(232, 232, 229);
     position: absolute;
     top: 0;
+    left: 0;
 }
 .nav-container .nav-logo {
     color: black;
