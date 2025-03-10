@@ -41,6 +41,7 @@ const DocumentsPage = () => {
       const user = auth.currentUser;
 
       if (!user) return;
+      console.log(highestMileage)
 
       const querySnapshot = await getDocs(
         query(collection(db, "documentRecords"), where("uid", "==", user.uid))
