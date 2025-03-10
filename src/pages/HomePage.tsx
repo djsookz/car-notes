@@ -22,7 +22,7 @@ const HomePage = () => {
   return (
     <div className="Home-Container">
       <Navigation />
-      <div>
+      <div className="Welcome">
         <h1>Добре дошли в сайта!</h1>
       </div>
     </div>
