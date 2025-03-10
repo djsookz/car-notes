@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Navigation from "../components/Navigation";
-import "./DocumentPage.css";
+import "./FuelPage.css";
 import {
   db,
   collection,
@@ -134,7 +134,7 @@ const DocumentsPage = () => {
   };
 
   return (
-    <div className="documents-container">
+    <div className="fuel-container">
       <Navigation />
       <div>
         <h1>Документи</h1>
@@ -201,7 +201,7 @@ const DocumentsPage = () => {
         </div>
       )}
 
-      <div className="documents-table-container">
+      <div className="fuel-table-container">
         <h2>Добавени записи:</h2>
         <table>
           <thead>

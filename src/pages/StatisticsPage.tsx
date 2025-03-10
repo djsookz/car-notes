@@ -95,6 +95,7 @@ const StatisticsPage = () => {
   return (
     <div className="statistics-container">
       <Navigation />
+      <div className="stats-container">
       <h1>Статистика</h1>
       <div className="chart-container">
         <ResponsiveContainer width="100%" height={400}>
@@ -116,6 +117,8 @@ const StatisticsPage = () => {
           </BarChart>
         </ResponsiveContainer>
       </div>
+      </div>
+      
     </div>
   );
 };
