@@ -1,6 +1,6 @@
-import { Link } from 'react-router-dom';
-import { getAuth, signOut } from 'firebase/auth';
-import './Navigation.css'
+import { Link } from "react-router-dom";
+import { getAuth, signOut } from "firebase/auth";
+import "./Navigation.css";
 
 const Navigation = () => {
   const auth = getAuth();
@@ -17,11 +17,10 @@ const Navigation = () => {
 
   return (
     <div className="nav-container">
-        <div className='nav-logo'>
-            <h2>LOGO</h2>
-        </div>
-      
-      
+      <div className="nav-logo">
+        <h2>LOGO</h2>
+      </div>
+
       <div className="nav-buttons">
         <Link to="/home" className="nav-link">
           <button className="nav-button">Начало</button>
@@ -32,8 +31,8 @@ const Navigation = () => {
         <Link to="/repair" className="nav-link">
           <button className="nav-button">Ремонт</button>
         </Link>
-        <Link to="/notes" className="nav-link">
-          <button className="nav-button">Бележки</button>
+        <Link to="/documents" className="nav-link">
+          <button className="nav-button">Документи</button>
         </Link>
         <Link to="/notifications" className="nav-link">
           <button className="nav-button">Известия</button>
@@ -48,8 +47,10 @@ const Navigation = () => {
         ) : (
           <div className="default-image">П</div> // Default профилна снимка (инициал)
         )}
-        <span className="username">{user ? user.displayName : 'Гост'}</span>
-      <button onClick={handleSignOut} className="sign-out-button">Изход</button>
+        <span className="username">{user ? user.displayName : "Гост"}</span>
+        <button onClick={handleSignOut} className="sign-out-button">
+          Изход
+        </button>
       </div>
     </div>
   );

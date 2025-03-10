@@ -28,7 +28,7 @@ const FuelPage = () => {
   const [parts, setParts] = useState<string>("");
   const [labour, setLabour] = useState<string>("");
   const [totalPrice, setTotalPrice] = useState<string>("");
-  const [serviceName, setServiceName] = useState<string>("");
+  const [serviceName, setServiceName] = useState<string>("Периодична подръжка");
   const [mileage, setMileage] = useState<string>("");
   const [date, setDate] = useState<string>("");
   const [comment, setComment] = useState<string>("");

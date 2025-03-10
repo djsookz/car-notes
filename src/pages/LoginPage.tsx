@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react";
-import { GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from "firebase/auth";
-import { auth } from "../firebase/config";  // Вижте, че използваме правилния auth
+import {
+  GoogleAuthProvider,
+  signInWithPopup,
+  onAuthStateChanged,
+} from "firebase/auth";
+import { auth } from "../firebase/config"; // Вижте, че използваме правилния auth
 import { useNavigate } from "react-router-dom";
-import './NotificationsPage'
-import './LoginPage.css'
-
+import "./NotificationsPage";
+import "./LoginPage.css";
 
 const LoginPage = () => {
   const [user, setUser] = useState<any>(null);
@@ -40,22 +43,21 @@ const LoginPage = () => {
 
   return (
     <div className="container">
+      <div className="login-container">
+        {!user ? (
+          <>
+            <h1>Добре дошли!</h1>
+            <p>Моля, влезте с Google:</p>
+            <button onClick={handleLogin}>Вход с Google</button>
+          </>
+        ) : (
+          <div>
+            <h2>Добре дошли, {user.displayName}</h2>
 
-    <div className="login-container">
-      {!user ? (
-        <>
-          <h1>Добре дошли!</h1>
-          <p>Моля, влезте с Google:</p>
-          <button onClick={handleLogin}>Вход с Google</button>
-        </>
-      ) : (
-        <div>
-          <h2>Добре дошли, {user.displayName}</h2>
-          
-          <p>Ти си логнат!</p>
-        </div>
-      )}
-    </div>
+            <p>Ти си логнат!</p>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
