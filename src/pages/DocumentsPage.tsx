@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import Navigation from "../components/Navigation";
-import "./FuelPage.css";
 import {
   db,
   collection,
@@ -12,6 +11,9 @@ import {
   where,
 } from "../firebase/config";
 import { getAuth } from "firebase/auth";
+import "./FuelPage.css";
+import { useMileage } from "../utils/MileageContext";
+import { validateMileage } from "../utils/validations";
 
 interface documentEntry {
   id?: string;
@@ -29,10 +31,10 @@ const DocumentsPage = () => {
   const [date, setDate] = useState<string>("");
   const [comment, setComment] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
-  const [documentEntries, setDocumentEntries] = useState<documentEntry[]>([]);
+  const [documentEntries, setDocumentEntries] = useState<any[]>([]);
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+  const { highestMileage, allEntries, refreshData } = useMileage();
 
-  // Зареждаме данни от Firebase
   useEffect(() => {
     const fetchDocumentEntries = async () => {
       const auth = getAuth();
@@ -40,7 +42,6 @@ const DocumentsPage = () => {
 
       if (!user) return;
 
-      // Извършваме заявка, която филтрира по uid на текущия потребител
       const querySnapshot = await getDocs(
         query(collection(db, "documentRecords"), where("uid", "==", user.uid))
       );
@@ -50,7 +51,6 @@ const DocumentsPage = () => {
         entries.push({ ...doc.data(), id: doc.id } as documentEntry);
       });
 
-      // Сортираме по дата (най-старите първи)
       const sortedEntries = entries.sort(
         (a: documentEntry, b: documentEntry) => {
           return new Date(a.date).getTime() - new Date(b.date).getTime();
@@ -64,21 +64,36 @@ const DocumentsPage = () => {
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    // Проверяваме дали всички полета са попълнени
+  
     if (!totalPrice || !documentName || !mileage || !date) {
       setErrorMessage("Моля, попълнете всички полета!");
+      return;
+    }
+  
+    const currentDate = new Date();
+    const inputDate = new Date(date);
+    const inputMileage = parseFloat(mileage);
+
+    const validationError = validateMileage(
+      inputMileage,
+      inputDate,
+      allEntries,
+      currentDate
+    );
+
+    if (validationError) {
+      setErrorMessage(validationError);
       return;
     }
 
     const auth = getAuth();
     const user = auth.currentUser;
-
+  
     if (!user) {
       console.error("Няма влязъл потребител.");
       return;
     }
-
+  
     const newDocumentEntry: documentEntry = {
       totalPrice,
       documentName,
@@ -86,26 +101,26 @@ const DocumentsPage = () => {
       date,
       comment,
     };
-
+  
     try {
-      // Добавяме UID на потребителя
       await addDoc(collection(db, "documentRecords"), {
         ...newDocumentEntry,
         uid: user.uid,
       });
+      
+      await refreshData();
       setDocumentEntries([newDocumentEntry, ...documentEntries]);
       setErrorMessage("");
     } catch (e) {
       console.error("Error adding document: ", e);
     }
-
-    // Reset the form fields
+  
     setTotalPrice("");
-    setDocumentName("");
+    setDocumentName("Глоба");
     setMileage("");
     setDate("");
     setComment("");
-    setIsModalVisible(false); // Скриваме модала след като добавим данни
+    setIsModalVisible(false);
   };
 
   const handleDeleteEntry = async (id?: string) => {

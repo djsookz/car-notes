@@ -12,6 +12,8 @@ import {
   where,
 } from "../firebase/config";
 import { getAuth } from "firebase/auth";
+import { useMileage } from "../utils/MileageContext";
+import { validateMileage } from "../utils/validations";
 
 interface FuelEntry {
   id?: string;
@@ -34,7 +36,8 @@ const FuelPage = () => {
   const [comment, setComment] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [fuelEntries, setFuelEntries] = useState<FuelEntry[]>([]);
-  const [isModalVisible, setIsModalVisible] = useState<boolean>(false); // Състояние за видимост на модалния прозорец
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+  const { highestMileage, setHighestMileage, allEntries, refreshData } = useMileage();
 
   const calculateTotalPrice = (price: number, liters: number) => {
     return (price * liters).toFixed(2);
@@ -48,15 +51,13 @@ const FuelPage = () => {
     }
   }, [pricePerLiter, liters]);
 
-  // Зареждаме данни от Firebase
   useEffect(() => {
     const fetchFuelEntries = async () => {
       const auth = getAuth();
       const user = auth.currentUser;
 
-      if (!user) return; // Ако няма влязъл потребител, не зареждай данни
+      if (!user) return;
 
-      // Извършваме заявка, която филтрира по uid на текущия потребител
       const querySnapshot = await getDocs(
         query(collection(db, "fuelRecords"), where("uid", "==", user.uid))
       );
@@ -66,7 +67,6 @@ const FuelPage = () => {
         entries.push({ ...doc.data(), id: doc.id } as FuelEntry);
       });
 
-      // Сортираме по дата (най-старите първи)
       const sortedEntries = entries.sort((a: FuelEntry, b: FuelEntry) => {
         return new Date(a.date).getTime() - new Date(b.date).getTime();
       });
@@ -78,7 +78,7 @@ const FuelPage = () => {
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const auth = getAuth(); // Вземаме текущия потребител
+    const auth = getAuth();
     const user = auth.currentUser;
 
     if (!user) {
@@ -98,6 +98,22 @@ const FuelPage = () => {
       return;
     }
 
+    const currentDate = new Date();
+    const inputDate = new Date(date);
+    const inputMileage = parseFloat(mileage);
+
+    const validationError = validateMileage(
+      inputMileage,
+      inputDate,
+      allEntries,
+      currentDate
+    );
+
+    if (validationError) {
+      setErrorMessage(validationError);
+      return;
+    }
+
     const newFuelEntry: FuelEntry = {
       totalPrice,
       fuelType,
@@ -109,18 +125,22 @@ const FuelPage = () => {
     };
 
     try {
-      // Добавяме UID на потребителя
       await addDoc(collection(db, "fuelRecords"), {
         ...newFuelEntry,
-        uid: user.uid, // Добавяме UID на потребителя
+        uid: user.uid,
       });
+      
+      if (inputMileage > highestMileage) {
+        setHighestMileage(inputMileage);
+      }
+
+      await refreshData();
       setFuelEntries([newFuelEntry, ...fuelEntries]);
       setErrorMessage("");
     } catch (e) {
       console.error("Error adding document: ", e);
     }
 
-    // Reset the form fields
     setPricePerLiter("");
     setLiters("");
     setTotalPrice("");
@@ -128,7 +148,7 @@ const FuelPage = () => {
     setMileage("");
     setDate("");
     setComment("");
-    setIsModalVisible(false); // Скриваме модала след като добавим данни
+    setIsModalVisible(false);
   };
 
   const handleDeleteEntry = async (id?: string) => {
@@ -153,7 +173,7 @@ const FuelPage = () => {
   };
 
   const toggleModalVisibility = () => {
-    setIsModalVisible(!isModalVisible); // Променяме видимостта на модала
+    setIsModalVisible(!isModalVisible);
   };
 
   return (
@@ -167,15 +187,10 @@ const FuelPage = () => {
 
       {isModalVisible && (
         <div className={`modal-overlay ${isModalVisible ? "show" : ""}`}>
-          {" "}
-          {/* Задният замъглен фон */}
           <div className={`modal-container ${isModalVisible ? "show" : ""}`}>
-            {" "}
-            {/* Модалният прозорец с формата */}
             <button onClick={toggleModalVisibility} className="close-button">
               X
-            </button>{" "}
-            {/* Бутон за затваряне */}
+            </button>
             <form onSubmit={handleFormSubmit}>
               {errorMessage && (
                 <div className="error-message">{errorMessage}</div>

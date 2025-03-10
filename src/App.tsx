@@ -6,11 +6,12 @@ import DocumentsPage from "./pages/DocumentsPage";
 import NotificationsPage from "./pages/NotificationsPage";
 import StatisticsPage from "./pages/StatisticsPage";
 import LoginPage from "./pages/LoginPage";
+import { MileageProvider } from "./utils/MileageContext";
 
 const App = () => {
   return (
-    <Routes>
-      {" "}
+    <MileageProvider>
+ <Routes>
       {/* Дефинираме маршрутите тук */}
       <Route path="/" element={<LoginPage />} />
       <Route path="/home" element={<HomePage />} />
@@ -20,6 +21,8 @@ const App = () => {
       <Route path="/notifications" element={<NotificationsPage />} />
       <Route path="/statistics" element={<StatisticsPage />} />
     </Routes>
+    </MileageProvider>
+   
   );
 };
 
