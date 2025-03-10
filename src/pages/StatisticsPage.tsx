@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import Navigation from "../components/Navigation";
+import "./StatisticsPage.css";
 import { db, collection, getDocs } from "../firebase/config";
 import {
   BarChart,
@@ -71,7 +72,6 @@ const StatisticsPage = () => {
         if (record.uid === user.uid) {
           const date = record.date || "Неизвестна дата";
           const total = parseFloat(record.totalPrice) || 0;
-          console.log(`Документ: дата=${date}, разходи=${total}`);
 
           if (!records[date]) {
             records[date] = { date, fuel: 0, repair: 0, document: total };
