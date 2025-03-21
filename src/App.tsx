@@ -11,18 +11,16 @@ import { MileageProvider } from "./utils/MileageContext";
 const App = () => {
   return (
     <MileageProvider>
- <Routes>
-      {/* Дефинираме маршрутите тук */}
-      <Route path="/" element={<LoginPage />} />
-      <Route path="/home" element={<HomePage />} />
-      <Route path="/fuel" element={<FuelPage />} />
-      <Route path="/repair" element={<RepairPage />} />
-      <Route path="/documents" element={<DocumentsPage />} />
-      <Route path="/notifications" element={<NotificationsPage />} />
-      <Route path="/statistics" element={<StatisticsPage />} />
-    </Routes>
+      <Routes>
+        <Route path="/" element={<LoginPage />} />
+        <Route path="/home" element={<HomePage />} />
+        <Route path="/fuel" element={<FuelPage />} />
+        <Route path="/repair" element={<RepairPage />} />
+        <Route path="/documents" element={<DocumentsPage />} />
+        <Route path="/notifications" element={<NotificationsPage />} />
+        <Route path="/statistics" element={<StatisticsPage />} />
+      </Routes>
     </MileageProvider>
-   
   );
 };
 

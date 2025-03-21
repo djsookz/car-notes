@@ -29,14 +29,12 @@ const StatisticsPage = () => {
       const user = auth.currentUser;
       if (!user) return;
 
-      // Взимаме разходите за гориво
       const fuelSnapshot = await getDocs(collection(db, "fuelRecords"));
       const repairSnapshot = await getDocs(collection(db, "repairRecords"));
       const documentSnapshot = await getDocs(collection(db, "documentRecords"));
 
       const records: Record<string, DataPoint> = {};
 
-      // Обработваме горивото
       fuelSnapshot.forEach((doc) => {
         const record = doc.data();
         if (record.uid === user.uid) {
@@ -51,7 +49,6 @@ const StatisticsPage = () => {
         }
       });
 
-      // Обработваме ремонтите
       repairSnapshot.forEach((doc) => {
         const record = doc.data();
         if (record.uid === user.uid) {
@@ -66,7 +63,6 @@ const StatisticsPage = () => {
         }
       });
 
-      // Обработваме документите
       documentSnapshot.forEach((doc) => {
         const record = doc.data();
         if (record.uid === user.uid) {
@@ -81,7 +77,6 @@ const StatisticsPage = () => {
         }
       });
 
-      // Конвертираме обекта в масив и сортираме по дата
       const sortedData = Object.values(records).sort(
         (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
       );
@@ -96,29 +91,28 @@ const StatisticsPage = () => {
     <div className="statistics-container">
       <Navigation />
       <div className="stats-container">
-      <h1>Статистика</h1>
-      <div className="chart-container">
-        <ResponsiveContainer width="100%" height={500}>
-          <BarChart
-            data={data}
-            margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-          >
-            <XAxis dataKey="date" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Bar dataKey="fuel" fill="#8884d8" name="Гориво" />
-            <Bar dataKey="repair" fill="#82ca9d" name="Ремонти" />
-            <Bar
-              dataKey="document"
-              fill="#FF8042"
-              name="Разходи по документи"
-            />
-          </BarChart>
-        </ResponsiveContainer>
+        <h1>Статистика</h1>
+        <div className="chart-container">
+          <ResponsiveContainer width="100%" height={500}>
+            <BarChart
+              data={data}
+              margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+            >
+              <XAxis dataKey="date" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="fuel" fill="#8884d8" name="Гориво" />
+              <Bar dataKey="repair" fill="#82ca9d" name="Ремонти" />
+              <Bar
+                dataKey="document"
+                fill="#FF8042"
+                name="Разходи по документи"
+              />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
       </div>
-      </div>
-      
     </div>
   );
 };

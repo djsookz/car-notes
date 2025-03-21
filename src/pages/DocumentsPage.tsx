@@ -41,7 +41,7 @@ const DocumentsPage = () => {
       const user = auth.currentUser;
 
       if (!user) return;
-      console.log(highestMileage)
+      console.log(highestMileage);
 
       const querySnapshot = await getDocs(
         query(collection(db, "documentRecords"), where("uid", "==", user.uid))
@@ -65,12 +65,12 @@ const DocumentsPage = () => {
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-  
+
     if (!totalPrice || !documentName || !mileage || !date) {
       setErrorMessage("Моля, попълнете всички полета!");
       return;
     }
-  
+
     const currentDate = new Date();
     const inputDate = new Date(date);
     const inputMileage = parseFloat(mileage);
@@ -89,12 +89,12 @@ const DocumentsPage = () => {
 
     const auth = getAuth();
     const user = auth.currentUser;
-  
+
     if (!user) {
       console.error("Няма влязъл потребител.");
       return;
     }
-  
+
     const newDocumentEntry: documentEntry = {
       totalPrice,
       documentName,
@@ -102,20 +102,20 @@ const DocumentsPage = () => {
       date,
       comment,
     };
-  
+
     try {
       await addDoc(collection(db, "documentRecords"), {
         ...newDocumentEntry,
         uid: user.uid,
       });
-      
+
       await refreshData();
       setDocumentEntries([newDocumentEntry, ...documentEntries]);
       setErrorMessage("");
     } catch (e) {
       console.error("Error adding document: ", e);
     }
-  
+
     setTotalPrice("");
     setDocumentName("Глоба");
     setMileage("");
@@ -146,7 +146,7 @@ const DocumentsPage = () => {
   };
 
   const toggleModalVisibility = () => {
-    setIsModalVisible(!isModalVisible); // Променяме видимостта на модала
+    setIsModalVisible(!isModalVisible);
   };
 
   return (

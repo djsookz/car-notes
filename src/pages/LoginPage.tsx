@@ -4,7 +4,7 @@ import {
   signInWithPopup,
   onAuthStateChanged,
 } from "firebase/auth";
-import { auth } from "../firebase/config"; // Вижте, че използваме правилния auth
+import { auth } from "../firebase/config";
 import { useNavigate } from "react-router-dom";
 import "./NotificationsPage";
 import "./LoginPage.css";
@@ -14,11 +14,10 @@ const LoginPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Следим състоянието на потребителя
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         setUser(user);
-        navigate("/home"); // Пренасочваме към home след успешен вход
+        navigate("/home");
       } else {
         setUser(null);
       }
@@ -34,7 +33,7 @@ const LoginPage = () => {
         const user = result.user;
         console.log("Вход успешен:", user);
         setUser(user);
-        navigate("/home"); // Пренасочваме към home след успешен вход
+        navigate("/home");
       })
       .catch((error) => {
         console.error("Грешка при вход:", error);
