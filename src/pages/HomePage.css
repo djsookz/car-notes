@@ -7,9 +7,20 @@
     align-items: center;
     justify-content: center;
 }
-@media (max-width: 768px) {
 .Welcome h1 {
-    font-size: 24px;
+    font-size: 45px;
 }
+@media (max-width: 992px) {
+    .nav-container .nav-link {
+        padding: 6px;
+    }
+    .Welcome h1 {
+        font-size: 35px;
+    }
+}
+@media (max-width: 768px) {
+    .Welcome h1 {
+        font-size: 25px;
+    }
 
 }
