@@ -35,3 +35,70 @@
 .nav-container .nav-buttons .nav-link {
     padding: 10px;
 }
+.hamburger-menu {
+    display: none;
+    /* ... останалите стилове от преди ... */
+  }
+/* За мобилни устройства */
+@media (max-width: 768px) {
+    .nav-container {
+      flex-wrap: wrap;
+        justify-content: left;
+    }
+  
+    .hamburger-menu {
+      display: block;
+      position: absolute;
+      right: 20px;
+      top: 20px;
+      z-index: 1000;
+    }
+  
+    .nav-buttons, 
+    .profile-container {
+      display: none;
+      width: 100%;
+      flex-direction: column;
+      align-items: flex-end;
+      animation: slideDown 0.3s ease-out;
+    }
+  
+    .nav-buttons {
+      order: 2;
+      margin-top: 20px;
+    }
+  
+    .profile-container {
+      order: 3;
+      flex-direction: column-reverse;
+      align-items: flex-end;
+      margin-top: 10px;
+    }
+  
+    .nav-buttons.active,
+    .profile-container.active {
+      display: flex;
+      align-items: center;
+    }
+  
+    .profile-image {
+      width: 40px !important;
+      margin: 10px 0;
+    }
+  
+    .sign-out-button {
+      margin-left: 0 !important;
+      margin-top: 10px;
+    }
+  
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  }
